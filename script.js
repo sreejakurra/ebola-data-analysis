@@ -113,6 +113,26 @@ plt.show()`,
 
 • A single-country maximum identifies the largest individual recorded value, not the country's cumulative total.
 • Outbreak intensity, healthcare capacity and reporting practices may warrant further investigation; this graph alone cannot establish the cause.`
+    },
+    {
+        title: "Historical Decomposition of the Outbreak",
+        image: "graphs/conclusion4.jpeg",
+        code: "",
+        notes: `The four phases account for 6,327 recorded cases in the period shown. The largest share occurred during August–September.
+
+• The late-summer phase contributes 5,005 cases, or 79.1% of the total shown.
+• The first three phases together contribute 1,322 cases, highlighting how heavily the recorded total is concentrated in the final phase.
+• These phase totals describe the chart's grouping; they do not, by themselves, prove what caused the surge.`
+    },
+    {
+        title: "Distribution and Variability Across Countries",
+        image: "graphs/conclusion5.jpeg",
+        code: "",
+        notes: `The box plot compares the spread of recorded values across five countries. The distributions differ substantially.
+
+• Liberia has a potential high outlier near 3,350, far above most of its other recorded values.
+• Sierra Leone and Guinea show broad ranges, while Mali and Senegal are clustered near zero on this chart's scale.
+• A potential outlier is an observation worth investigating, not necessarily an error. Near-zero values do not automatically mean there were no cases.`
     }
 ];
 
@@ -127,7 +147,6 @@ const viewCodeButton = document.getElementById("viewCodeButton");
 const copyButton = document.getElementById("copyButton");
 const closeButton = document.getElementById("closeButton");
 
-// Create all graph cards.
 graphs.forEach((graph, index) => {
     const card = document.createElement("article");
     card.className = "graph-card";
@@ -140,13 +159,11 @@ graphs.forEach((graph, index) => {
         image.alt = "Image not found: " + graph.image;
     };
 
-    // Keep Graph 1 in its original layout.
     if (graph.originalLayout) {
         const heading = document.createElement("h3");
         heading.textContent = graph.title;
         card.append(image, heading);
     } else {
-        // Graphs 2a, 2b and 2c show notes beside the graph.
         card.classList.add("research-card");
 
         const researchLayout = document.createElement("div");
@@ -154,7 +171,6 @@ graphs.forEach((graph, index) => {
 
         const notes = document.createElement("div");
         notes.className = "research-notes";
-
         addNotes(notes, graph.notes);
 
         researchLayout.append(image, notes);
@@ -196,20 +212,16 @@ graphs.forEach((graph, index) => {
     card.appendChild(bottom);
 
     card.addEventListener("click", () => openViewer(index));
-
     gallery.appendChild(card);
 });
 
-// Display the introduction and bullet points.
 function addNotes(container, text) {
     container.replaceChildren();
 
     const parts = text.split("\n\n");
 
     parts.forEach(part => {
-        if (!part.trim()) {
-            return;
-        }
+        if (!part.trim()) return;
 
         if (part.includes("\n• ")) {
             const lines = part.split("\n");
@@ -221,9 +233,7 @@ function addNotes(container, text) {
             const list = document.createElement("ul");
 
             lines.slice(1).forEach(line => {
-                if (!line.trim()) {
-                    return;
-                }
+                if (!line.trim()) return;
 
                 const item = document.createElement("li");
                 item.textContent = line.replace(/^•\s*/, "");
@@ -239,7 +249,6 @@ function addNotes(container, text) {
     });
 }
 
-// Open the selected graph with its matching notes.
 function openViewer(index) {
     const graph = graphs[index];
 
@@ -269,11 +278,8 @@ function openViewer(index) {
     document.body.style.overflow = "hidden";
 }
 
-// Show the Python code panel.
 function showCode() {
-    if (!pythonCode.textContent.trim()) {
-        return;
-    }
+    if (!pythonCode.textContent.trim()) return;
 
     codePanel.hidden = false;
     viewCodeButton.hidden = true;
@@ -282,28 +288,20 @@ function showCode() {
 viewCodeButton.addEventListener("click", showCode);
 closeButton.addEventListener("click", closeViewer);
 
-// Close the enlarged view.
 function closeViewer() {
     viewer.classList.remove("is-open");
     viewer.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 }
 
-// Close when the dark background is clicked.
 viewer.addEventListener("click", event => {
-    if (event.target === viewer) {
-        closeViewer();
-    }
+    if (event.target === viewer) closeViewer();
 });
 
-// Close with the Escape key.
 document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-        closeViewer();
-    }
+    if (event.key === "Escape") closeViewer();
 });
 
-// Copy the displayed Python code.
 copyButton.addEventListener("click", async () => {
     try {
         await navigator.clipboard.writeText(pythonCode.textContent);
