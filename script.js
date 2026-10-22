@@ -117,22 +117,73 @@ plt.show()`,
     {
         title: "Historical Decomposition of the Outbreak",
         image: "graphs/conclusion4.jpeg",
-        code: "",
-        notes: `The four phases account for 6,327 recorded cases in the period shown. The largest share occurred during August–September.
+        code: `import matplotlib.pyplot as plt
 
-• The late-summer phase contributes 5,005 cases, or 79.1% of the total shown.
-• The first three phases together contribute 1,322 cases, highlighting how heavily the recorded total is concentrated in the final phase.
-• These phase totals describe the chart's grouping; they do not, by themselves, prove what caused the surge.`
+phases = [
+    "March-April",
+    "May-June",
+    "July",
+    "August-September"
+]
+
+cases = [20, 248, 1054, 5005]
+
+plt.figure(figsize=(9, 5))
+plt.pie(
+    cases,
+    labels=phases,
+    autopct="%1.1f%%",
+    startangle=90
+)
+
+plt.title("Historical Decomposition of the Ebola Outbreak")
+plt.tight_layout()
+plt.show()`,
+        notes: `The four phases account for 6,327 recorded cases in the period shown.
+
+• August-September contributes 5,005 cases, around 79.1% of the total.
+• The distribution shows that recorded cases were heavily concentrated in the final phase.
+• These phase totals describe the chart's grouping and do not establish the cause of the increase.`
     },
     {
         title: "Distribution and Variability Across Countries",
         image: "graphs/conclusion5.jpeg",
-        code: "",
-        notes: `The box plot compares the spread of recorded values across five countries. The distributions differ substantially.
+        code: `import pandas as pd
+import matplotlib.pyplot as plt
 
-• Liberia has a potential high outlier near 3,350, far above most of its other recorded values.
-• Sierra Leone and Guinea show broad ranges, while Mali and Senegal are clustered near zero on this chart's scale.
-• A potential outlier is an observation worth investigating, not necessarily an error. Near-zero values do not automatically mean there were no cases.`
+url = "https://raw.githubusercontent.com/plotly/datasets/master/2014_ebola.csv"
+df = pd.read_csv(url)
+
+countries = [
+    "Guinea",
+    "Liberia",
+    "Mali",
+    "Senegal",
+    "Sierra Leone"
+]
+
+data = []
+
+for country in countries:
+    values = df.loc[
+        df["Country"] == country, "Value"
+    ].dropna()
+    data.append(values)
+
+plt.figure(figsize=(10, 5))
+plt.boxplot(data, labels=countries)
+
+plt.title("Distribution of Recorded Values by Country")
+plt.xlabel("Country")
+plt.ylabel("Recorded Value")
+plt.xticks(rotation=20)
+plt.tight_layout()
+plt.show()`,
+        notes: `The box plot compares the spread of recorded values across five countries.
+
+• Liberia has a potential high outlier, which deserves further investigation.
+• Differences in the boxes and whiskers indicate variation in the recorded values.
+• A potential outlier is not necessarily an error, and near-zero values do not automatically mean there were no cases.`
     }
 ];
 
