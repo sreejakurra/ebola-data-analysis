@@ -43,20 +43,22 @@ main {
     padding: 18px;
 }
 
+/* Two columns with independent card stacking */
 .gallery {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
-    align-items: start;
+    columns: 2;
+    column-gap: 16px;
 }
 
 .graph-card {
-    min-width: 0;
+    display: inline-block;
+    width: 100%;
+    margin: 0 0 8px;
     padding: 12px;
     background: var(--card-bg);
     border: 2px solid var(--border);
     border-radius: 4px;
     cursor: pointer;
+    break-inside: avoid;
 }
 
 .graph-card > img {
@@ -103,8 +105,7 @@ main {
     border-color: var(--teal);
 }
 
-/* Research layout for Graphs 2a, 2b and 2c */
-
+/* Graphs 2 to 6: image and observations side by side */
 .graph-card.research-card {
     padding: 8px;
 }
@@ -150,8 +151,7 @@ main {
     margin-top: 8px;
 }
 
-/* Enlarged graph viewer */
-
+/* Enlarged viewer */
 .viewer {
     display: none;
     position: fixed;
@@ -268,7 +268,7 @@ main {
 
 @media (max-width: 900px) {
     .gallery {
-        grid-template-columns: 1fr;
+        columns: 1;
     }
 
     .graph-card.research-card .research-layout > img {
