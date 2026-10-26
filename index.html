@@ -1,19 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebola Data Analysis</title>
+    <title>Ebola Outbreak - Data Analysis</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
     <header class="page-header">
         <h1>Ebola Outbreak: Data Analysis</h1>
         <p>
             Exploring the geographic spread, monthly patterns and
-            country-level records of the 2014 outbreak.
+            country-level records of the 2014 Ebola outbreak.
         </p>
     </header>
 
@@ -21,15 +21,20 @@
         <section id="gallery" class="gallery"></section>
     </main>
 
+    <!-- Enlarged graph viewer -->
     <div id="viewer" class="viewer" aria-hidden="true">
+
         <div class="viewer-content">
 
             <button id="closeButton" class="close-button"
                     aria-label="Close viewer">&times;</button>
 
             <div id="viewerResearch" class="viewer-research">
+
                 <img id="largeGraph" src="" alt="Enlarged graph">
+
                 <div id="viewerNotes" class="research-notes" hidden></div>
+
             </div>
 
             <div class="viewer-actions">
@@ -38,20 +43,26 @@
                 </button>
             </div>
 
+            <!-- Python code section -->
             <div id="codePanel" class="code-panel" hidden>
+
                 <div class="code-header">
                     <h3>Python Code</h3>
+
                     <button id="copyButton" class="action-button">
                         Copy Code
                     </button>
                 </div>
 
                 <pre><code id="pythonCode"></code></pre>
+
             </div>
 
         </div>
+
     </div>
 
     <script src="script.js"></script>
+
 </body>
 </html>
