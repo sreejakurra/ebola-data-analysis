@@ -1,383 +1,241 @@
-:root {
-    --page-bg: #e9e9e9;
-    --card-bg: #ffffff;
-    --text: #222222;
-    --muted: #555555;
-    --border: #333333;
-    --teal: #087e83;
-    --coral: #e87862;
-    --code-bg: #20242b;
-}
 
 * {
     box-sizing: border-box;
 }
 
-html {
-    margin: 0;
-    padding: 0;
-}
-
 body {
     margin: 0;
-    padding: 0;
+    padding: 10px;
+    background: #f3f5f8;
+    color: #202733;
     font-family: Arial, Helvetica, sans-serif;
-    background: var(--page-bg);
-    color: var(--text);
+    font-size: 12px;
 }
 
-/* Compact slide-style heading */
-
 .page-header {
-    padding: 9px 14px 7px;
     text-align: center;
-    background: white;
-    border-bottom: 2px solid var(--border);
+    margin: 0 auto 12px;
 }
 
 .page-header h1 {
-    margin: 0 0 4px;
-    font-size: clamp(17px, 1.6vw, 24px);
-    line-height: 1.15;
-    letter-spacing: 0.2px;
+    font-size: 23px;
+    margin: 5px 0;
 }
 
 .page-header p {
-    max-width: 1000px;
-    margin: 0 auto;
-    color: var(--muted);
-    font-size: 10px;
-    line-height: 1.3;
-}
-
-/* Eight cards arranged like a research slide */
-
-main {
-    width: 100%;
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 7px;
+    margin: 5px 0;
+    color: #566170;
+    font-size: 12px;
 }
 
 .gallery {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 7px;
-    align-items: stretch;
+    gap: 8px;
+    align-items: start;
 }
 
-/* Compact individual cards */
-
 .graph-card {
-    display: flex;
-    flex-direction: column;
     min-width: 0;
-    margin: 0;
-    padding: 7px;
-    background: var(--card-bg);
-    border: 1.5px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    break-inside: avoid;
+    padding: 8px;
+    background: white;
+    border: 1px solid #dce1e8;
+    border-radius: 7px;
+    box-shadow: 0 1px 4px #0000000d;
+}
+
+.graph-card h2 {
+    margin: 0 0 6px;
+    font-size: 13px;
+    line-height: 1.3;
 }
 
 .graph-card img {
     display: block;
     width: 100%;
-    height: auto;
-    max-height: 145px;
+    height: 125px;
     object-fit: contain;
-    border: 1px solid #dddddd;
-}
-
-/* First graph */
-
-.graph-card.first-card img {
-    width: 100%;
-    max-height: 200px;
-    object-fit: contain;
-}
-
-/* Graph and full theory inside each card */
-
-.research-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    min-width: 0;
-}
-
-.graph-image {
-    width: 100%;
-    min-width: 0;
-}
-
-.research-notes {
-    min-width: 0;
-    font-size: 9px;
-    line-height: 1.27;
-    overflow-wrap: anywhere;
-}
-
-.research-notes p {
-    margin: 0 0 4px;
-}
-
-.research-notes ul {
-    margin: 3px 0 4px;
-    padding-left: 14px;
-}
-
-.research-notes li {
-    margin-bottom: 3px;
-}
-
-.notes-label {
-    margin: 0 0 4px;
-    padding-bottom: 3px;
-    border-bottom: 1.5px solid var(--teal);
-    font-size: 11px;
-    line-height: 1.2;
-}
-
-/* Keep card buttons available */
-
-.card-actions {
-    display: flex;
-    gap: 4px;
-    margin-top: auto;
-    padding-top: 6px;
-}
-
-.card-button {
-    flex: 1;
-    min-width: 0;
-    padding: 6px 3px;
-    border: none;
-    border-radius: 2px;
-    background: var(--teal);
-    color: white;
-    font-size: 9px;
-    font-weight: bold;
-    line-height: 1.2;
+    background: #fff;
+    border: 1px solid #eef0f3;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-.card-button.code-button {
-    background: #343a40;
+.graph-card .image-error {
+    height: 60px;
+    object-fit: contain;
 }
 
-.card-button:hover,
-.action-button:hover {
-    opacity: 0.85;
+.card-notes {
+    line-height: 1.35;
+    overflow-wrap: anywhere;
 }
 
-/* Enlarged graph window */
+.card-notes h3 {
+    font-size: 11px;
+    margin: 7px 0 2px;
+}
+
+.card-notes p {
+    margin: 2px 0 5px;
+}
+
+.card-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 8px;
+}
+
+button {
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 4px;
+    background: #234e70;
+    color: white;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #17364f;
+}
+
+button:focus-visible {
+    outline: 2px solid #f0a500;
+    outline-offset: 2px;
+}
 
 .viewer {
-    display: none;
     position: fixed;
     inset: 0;
     z-index: 1000;
-    padding: 15px;
+    padding: 20px;
+    background: #10151dcc;
     overflow-y: auto;
-    background: rgba(0, 0, 0, 0.84);
 }
 
-.viewer.active {
-    display: block;
+.hidden {
+    display: none !important;
 }
 
 .viewer-content {
     position: relative;
-    width: 100%;
-    max-width: 1250px;
-    margin: 10px auto;
+    width: min(950px, 100%);
+    margin: 0 auto;
     padding: 20px;
+    border-radius: 9px;
     background: white;
-    border: 2px solid var(--border);
-    border-radius: 4px;
 }
 
 .close-button {
     position: absolute;
-    top: 6px;
-    right: 8px;
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: var(--coral);
-    color: white;
-    font-size: 25px;
-    cursor: pointer;
+    top: 10px;
+    right: 12px;
+    font-size: 24px;
+    padding: 3px 10px;
 }
 
-.viewer-title {
-    margin: 5px 40px 12px 0;
-    font-size: 20px;
-    line-height: 1.3;
-}
-
-/* Enlarged image and explanation */
-
-.viewer-research {
-    display: grid;
-    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
-    gap: 18px;
-    align-items: start;
+.viewer-content h2 {
+    margin: 0 45px 14px 0;
+    font-size: 21px;
 }
 
 #largeGraph {
     display: block;
     width: 100%;
-    height: auto;
-    border: 1px solid #dddddd;
+    max-height: 55vh;
+    object-fit: contain;
+    margin-bottom: 15px;
+    background: #fff;
 }
 
-.viewer-research .research-notes {
+.viewer-notes,
+.viewer-research {
+    line-height: 1.55;
     font-size: 13px;
-    line-height: 1.6;
 }
 
-.viewer-research .notes-label {
-    font-size: 16px;
+.viewer-notes h3,
+.viewer-research h3 {
+    margin: 12px 0 4px;
 }
-
-/* Buttons in enlarged view */
 
 .viewer-actions {
-    display: flex;
-    gap: 8px;
     margin-top: 12px;
 }
-
-.action-button {
-    padding: 8px 13px;
-    border: none;
-    border-radius: 3px;
-    background: var(--teal);
-    color: white;
-    font-size: 12px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-/* Python code panel */
 
 .code-panel {
     margin-top: 12px;
-    border: 1.5px solid var(--border);
+    border: 1px solid #dce1e8;
+    border-radius: 6px;
+    overflow: hidden;
 }
 
-.code-header {
+.code-heading {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 10px;
-    padding: 8px 10px;
-    background: #e7e7e7;
+    padding: 8px 12px;
+    background: #edf1f5;
 }
 
-.code-header h3 {
+.code-heading h3 {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .code-panel pre {
     margin: 0;
     padding: 14px;
-    max-height: 450px;
+    max-height: 400px;
     overflow: auto;
-    background: var(--code-bg);
-    color: #f5f5f5;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    font-family: Consolas, "Courier New", monospace;
+    background: #151b25;
+    color: #e7edf5;
     font-size: 12px;
     line-height: 1.5;
+    white-space: pre;
 }
 
-/* Medium screens */
+body.viewer-open {
+    overflow: hidden;
+}
 
-@media (max-width: 1100px) {
+@media (max-width: 1050px) {
+    .gallery {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 750px) {
     .gallery {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .research-notes {
-        font-size: 11px;
-        line-height: 1.4;
-    }
-
-    .notes-label {
-        font-size: 13px;
-    }
-
     .graph-card img {
-        max-height: 230px;
+        height: 115px;
     }
 }
 
-/* Phones */
+@media (max-width: 480px) {
+    body {
+        padding: 7px;
+    }
 
-@media (max-width: 600px) {
-    .page-header {
-        padding: 12px 8px;
+    .gallery {
+        grid-template-columns: 1fr;
     }
 
     .page-header h1 {
         font-size: 20px;
     }
 
-    main {
-        padding: 6px;
-    }
-
-    .gallery {
-        grid-template-columns: 1fr;
-        gap: 8px;
-    }
-
-    .graph-card {
-        padding: 9px;
-    }
-
-    .graph-card img {
-        max-height: none;
-    }
-
-    .research-notes {
-        font-size: 12px;
-        line-height: 1.5;
-    }
-
-    .notes-label {
-        font-size: 14px;
-    }
-
-    .card-button {
-        padding: 9px 5px;
-        font-size: 11px;
-    }
-
     .viewer {
-        padding: 6px;
+        padding: 8px;
     }
 
     .viewer-content {
-        padding: 12px;
-    }
-
-    .viewer-research {
-        grid-template-columns: 1fr;
-    }
-
-    .viewer-research .research-notes {
-        font-size: 13px;
-    }
-
-    .code-header {
-        align-items: flex-start;
-        flex-direction: column;
+        padding: 14px;
     }
 }
