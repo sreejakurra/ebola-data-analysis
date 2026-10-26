@@ -2,7 +2,6 @@ const graphs = [
     {
         title: "Geographic Distribution",
         image: "graphs/graph1.jpg",
-        layout: "first",
         notes: "",
         code: ""
     },
@@ -10,14 +9,13 @@ const graphs = [
     {
         title: "Monthly Recorded Values",
         image: "graphs/conclusion2a.jpg",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Monthly Pattern</h3>
-            <p>The monthly view helps show how recorded Ebola values changed over time.</p>
+            <p>This graph helps compare recorded Ebola values across months.</p>
             <ul>
-                <li>Compare values across months to identify increases and decreases.</li>
-                <li>A rise may indicate a period of greater reported outbreak activity.</li>
-                <li>Missing observations should be considered before interpreting totals.</li>
+                <li>Changes between months can reveal periods of increasing or decreasing reported activity.</li>
+                <li>A rise in recorded values indicates a change in the observations included in the dataset.</li>
+                <li>Missing records should be considered when interpreting the totals.</li>
             </ul>
         `,
         code: `import pandas as pd
@@ -44,14 +42,13 @@ plt.show()`
     {
         title: "Country-Level Monthly Trend",
         image: "graphs/conclusion2b.jpg",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Country Comparison</h3>
-            <p>Comparing countries helps reveal differences in recorded values over time.</p>
+            <p>The graph compares how recorded values change over time in different countries.</p>
             <ul>
-                <li>Countries can show different levels and changes during the same period.</li>
-                <li>A sharp increase in one country can stand out from other trends.</li>
-                <li>Reporting differences and missing observations should be considered.</li>
+                <li>Countries do not necessarily follow the same pattern.</li>
+                <li>Sharp increases make periods of greater reported activity easier to identify.</li>
+                <li>Missing observations and differences in reporting can affect comparisons.</li>
             </ul>
         `,
         code: `import pandas as pd
@@ -64,16 +61,17 @@ df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
 df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
 df = df.dropna(subset=["Date", "Value"])
 
-monthly = df.groupby(
-    [df["Date"].dt.to_period("M"), "Country"]
-)["Value"].sum().reset_index()
+df["Month"] = df["Date"].dt.to_period("M")
 
-monthly["Date"] = monthly["Date"].astype(str)
+monthly = df.groupby(
+    ["Month", "Country"]
+)["Value"].sum().reset_index()
 
 for country in monthly["Country"].unique():
     country_data = monthly[monthly["Country"] == country]
+
     plt.plot(
-        country_data["Date"],
+        country_data["Month"].astype(str),
         country_data["Value"],
         marker="o",
         label=country
@@ -91,14 +89,13 @@ plt.show()`
     {
         title: "Country-Level Recorded Values",
         image: "graphs/conclusion3.png",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Country-Level Observation</h3>
-            <p>The comparison highlights differences in recorded values among countries.</p>
+            <p>This comparison highlights differences in recorded values between countries.</p>
             <ul>
                 <li>Liberia has a high recorded value in the displayed comparison.</li>
-                <li>Differences may reflect outbreak patterns and the records included.</li>
-                <li>Interpret values according to the dataset's measurement definition.</li>
+                <li>Country differences may reflect outbreak patterns and the records included.</li>
+                <li>Values should be interpreted using the dataset's measurement definition.</li>
             </ul>
         `,
         code: `import pandas as pd
@@ -125,15 +122,14 @@ plt.show()`
     {
         title: "Box Plot: Distribution by Country",
         image: "graphs/conclusion4.jpeg",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Box Plot Analysis</h3>
-            <p>The box plot compares the distribution of recorded values across countries.</p>
+            <p>A box plot summarizes the distribution of recorded values for each country.</p>
             <ul>
-                <li>Liberia shows a potential high outlier, separated from many of its other recorded values.</li>
-                <li>Differences in boxes and whiskers indicate variation in the distributions.</li>
-                <li>An outlier is worth investigating but is not necessarily an error.</li>
-                <li>Near-zero values do not automatically mean there were no cases.</li>
+                <li>The box represents the middle half of the observations.</li>
+                <li>The line inside the box represents the median.</li>
+                <li>Whiskers show the range covered by the box plot's rule; points beyond them may be outliers.</li>
+                <li>An outlier deserves investigation but is not necessarily an error.</li>
             </ul>
         `,
         code: `import pandas as pd
@@ -160,6 +156,7 @@ for country in countries:
     data.append(values)
 
 plt.figure(figsize=(10, 5))
+
 plt.boxplot(data, tick_labels=countries)
 
 plt.title("Distribution of Recorded Values by Country")
@@ -173,21 +170,21 @@ plt.show()`
     {
         title: "Donut Chart: Outbreak Phases",
         image: "graphs/conclusion5.jpeg",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Donut Chart Analysis</h3>
-            <p>The chart divides the displayed total across the outbreak phases used in the visualization.</p>
+            <p>The donut chart compares the share represented by each phase in the selected breakdown.</p>
             <ul>
-                <li>The August–September segment represents the largest share in the displayed breakdown.</li>
-                <li>This highlights the concentration of the displayed total in the final phase.</li>
-                <li>The chart describes the phase totals but does not establish the cause of the increase.</li>
+                <li>The largest segment represents the largest share of the displayed total.</li>
+                <li>Segment sizes make it easier to compare the relative contribution of each phase.</li>
+                <li>The chart describes the breakdown but does not explain what caused the differences.</li>
             </ul>
             <p><strong>Note:</strong> Verify the phase totals against the original data before reporting percentages.</p>
         `,
         code: `import matplotlib.pyplot as plt
 
 # Illustrative values only.
-# Replace them with the exact totals used in your original chart.
+# Replace these with the exact values used in your original chart.
+
 phases = [
     "March-April",
     "May-June",
@@ -215,18 +212,17 @@ plt.show()`
     {
         title: "Scatter Plot: Month vs Value by Country",
         image: "graphs/conclusion6.jpeg",
-        layout: "research",
         notes: `
             <h3 class="notes-label">Scatter Plot Analysis</h3>
-            <p>This scatter plot compares recorded values across months for five countries during 2014.</p>
+            <p>This scatter plot compares monthly recorded values across five countries during 2014.</p>
             <ul>
-                <li><strong>Guinea:</strong> The plotted values rise from March through September, with a noticeable increase in August and September.</li>
+                <li><strong>Guinea:</strong> The displayed values rise from March through September.</li>
                 <li><strong>Liberia:</strong> The largest displayed point occurs in September, at approximately 3,360.</li>
-                <li><strong>Sierra Leone:</strong> The plotted values rise from May to September, reaching approximately 1,940 in September.</li>
-                <li><strong>Mali and Senegal:</strong> Their displayed points are near zero in the months shown.</li>
-                <li><strong>Overall:</strong> The chart highlights differences in the timing and magnitude of recorded values across countries.</li>
+                <li><strong>Sierra Leone:</strong> Values rise from May to September, reaching approximately 1,940.</li>
+                <li><strong>Mali and Senegal:</strong> Their displayed points are close to zero in the months shown.</li>
+                <li><strong>Overall:</strong> The graph highlights differences in the timing and magnitude of recorded values.</li>
             </ul>
-            <p>These are observations from the displayed graph. A point near zero does not by itself prove that no cases occurred.</p>
+            <p>These observations describe the displayed graph. A point near zero does not by itself prove that no cases occurred.</p>
         `,
         code: `import matplotlib.pyplot as plt
 
@@ -242,8 +238,8 @@ months = {
     "Nov": 11
 }
 
-# Approximate values read from the displayed graph.
-# Use the original dataset for exact values.
+# Approximate values read from the graph.
+# Use the original data for exact values.
 
 data = {
     "Guinea": {
@@ -255,7 +251,6 @@ data = {
         "Aug": 770,
         "Sep": 1020
     },
-
     "Liberia": {
         "Apr": 40,
         "May": 15,
@@ -264,17 +259,14 @@ data = {
         "Aug": 1390,
         "Sep": 3360
     },
-
     "Mali": {
         "Oct": 0,
         "Nov": 10
     },
-
     "Senegal": {
         "Aug": 0,
         "Sep": 0
     },
-
     "Sierra Leone": {
         "May": 50,
         "Jun": 240,
@@ -292,7 +284,12 @@ for country, values in data.items():
         x_values.append(months[month])
         y_values.append(value)
 
-    plt.scatter(x_values, y_values, label=country, s=70)
+    plt.scatter(
+        x_values,
+        y_values,
+        label=country,
+        s=70
+    )
 
 plt.title("Scatter Plot: Month vs Value by Country (2014)")
 plt.xlabel("Month")
@@ -307,14 +304,135 @@ plt.legend()
 plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()`
+    },
+
+    {
+        title: "Caseload Progression by Country (July–September 2014)",
+        image: "graphs/conclusion7.jpeg",
+        notes: `
+            <h3 class="notes-label">Three-Month Caseload Comparison</h3>
+            <p>This grouped bar chart compares recorded Ebola values across five countries from July to September 2014.</p>
+            <ul>
+                <li><strong>Liberia:</strong> Increased from 329 in July to 1,395 in August and 3,362 in September.</li>
+                <li><strong>Sierra Leone:</strong> Rose from 533 to 1,216 and then 1,940.</li>
+                <li><strong>Guinea:</strong> Increased from 460 to 771 and then 1,022.</li>
+                <li><strong>Senegal:</strong> The displayed values were 0, 1 and 3.</li>
+                <li><strong>Mali:</strong> The chart displays zero for all three months.</li>
+            </ul>
+            <p><strong>Conclusion:</strong> Liberia shows the largest increase in the displayed values, followed by Sierra Leone and Guinea. Interpret displayed zeros in the context of the source data.</p>
+        `,
+        code: `import matplotlib.pyplot as plt
+import numpy as np
+
+countries = [
+    "Liberia",
+    "Sierra Leone",
+    "Guinea",
+    "Senegal",
+    "Mali"
+]
+
+july = [329, 533, 460, 0, 0]
+august = [1395, 1216, 771, 1, 0]
+september = [3362, 1940, 1022, 3, 0]
+
+x = np.arange(len(countries))
+width = 0.24
+
+plt.figure(figsize=(13, 6))
+
+plt.bar(x - width, july, width, label="July")
+plt.bar(x, august, width, label="August")
+plt.bar(x + width, september, width, label="September")
+
+plt.title(
+    "Caseload Progression by Country Across Late Summer "
+    "(July-September 2014)"
+)
+plt.xlabel("Country Name")
+plt.ylabel("Recorded Ebola Cases")
+plt.xticks(x, countries)
+plt.legend()
+plt.grid(axis="y", linestyle=":", alpha=0.5)
+
+plt.tight_layout()
+plt.show()`
     }
 ];
 
 
-/* Get website elements */
+/* Create all graph cards */
 
 const gallery = document.getElementById("gallery");
+
+function displayGraphs() {
+    gallery.innerHTML = "";
+
+    graphs.forEach(function (graph, index) {
+        const card = document.createElement("article");
+        card.className = "graph-card";
+
+        if (index === 0) {
+            card.classList.add("first-card");
+
+            card.innerHTML = `
+                <img src="${graph.image}" alt="${graph.title}">
+            `;
+        } else {
+            card.innerHTML = `
+                <div class="research-layout">
+                    <div class="graph-image">
+                        <img src="${graph.image}" alt="${graph.title}">
+                    </div>
+                    <div class="research-notes">
+                        ${graph.notes}
+                    </div>
+                </div>
+            `;
+        }
+
+        const actions = document.createElement("div");
+        actions.className = "card-actions";
+
+        const enlargeButton = document.createElement("button");
+        enlargeButton.className = "card-button";
+        enlargeButton.textContent = "Enlarge Graph";
+
+        enlargeButton.addEventListener("click", function (event) {
+            event.stopPropagation();
+            openViewer(index, false);
+        });
+
+        actions.appendChild(enlargeButton);
+
+        if (graph.code.trim() !== "") {
+            const codeButton = document.createElement("button");
+            codeButton.className = "card-button code-button";
+            codeButton.textContent = "View Code";
+
+            codeButton.addEventListener("click", function (event) {
+                event.stopPropagation();
+                openViewer(index, true);
+            });
+
+            actions.appendChild(codeButton);
+        }
+
+        card.appendChild(actions);
+
+        card.addEventListener("click", function () {
+            openViewer(index, false);
+        });
+
+        gallery.appendChild(card);
+    });
+}
+
+
+/* Viewer elements */
+
 const viewer = document.getElementById("viewer");
+const viewerTitle = document.getElementById("viewerTitle");
 const largeGraph = document.getElementById("largeGraph");
 const viewerNotes = document.getElementById("viewerNotes");
 const viewerResearch = document.getElementById("viewerResearch");
@@ -325,66 +443,36 @@ const pythonCode = document.getElementById("pythonCode");
 const copyButton = document.getElementById("copyButton");
 
 
-/* Create graph cards */
-
-function displayGraphs() {
-    gallery.innerHTML = "";
-
-    graphs.forEach(function (graph, index) {
-        const card = document.createElement("article");
-
-        if (graph.layout === "first") {
-            card.className = "graph-card first-card";
-
-            card.innerHTML = `
-                <img src="${graph.image}" alt="${graph.title}">
-            `;
-        } else {
-            card.className = "graph-card";
-
-            card.innerHTML = `
-                <div class="research-layout">
-                    <div class="graph-image">
-                        <img src="${graph.image}" alt="${graph.title}">
-                    </div>
-
-                    <div class="research-notes">
-                        ${graph.notes}
-                    </div>
-                </div>
-            `;
-        }
-
-        card.addEventListener("click", function () {
-            openViewer(index);
-        });
-
-        gallery.appendChild(card);
-    });
-}
-
-
 /* Open enlarged graph */
 
-function openViewer(index) {
+function openViewer(index, showCode) {
     const graph = graphs[index];
 
+    viewerTitle.textContent = graph.title;
     largeGraph.src = graph.image;
     largeGraph.alt = graph.title;
 
     viewerNotes.innerHTML = graph.notes;
-    viewerNotes.hidden = graph.layout === "first";
+    viewerNotes.hidden = index === 0;
 
     viewerResearch.style.gridTemplateColumns =
-        graph.layout === "first"
+        index === 0
             ? "1fr"
             : "minmax(0, 1.4fr) minmax(0, 0.8fr)";
 
     pythonCode.textContent = graph.code;
-    codePanel.hidden = true;
 
-    viewCodeButton.hidden = graph.code.trim() === "";
-    viewCodeButton.textContent = "View Code";
+    if (graph.code.trim() === "") {
+        viewCodeButton.hidden = true;
+        codePanel.hidden = true;
+    } else {
+        viewCodeButton.hidden = false;
+        codePanel.hidden = !showCode;
+    }
+
+    viewCodeButton.textContent = codePanel.hidden
+        ? "View Code"
+        : "Hide Code";
 
     viewer.classList.add("active");
     viewer.setAttribute("aria-hidden", "false");
@@ -393,7 +481,7 @@ function openViewer(index) {
 }
 
 
-/* Close enlarged graph */
+/* Close viewer */
 
 function closeViewer() {
     viewer.classList.remove("active");
@@ -405,17 +493,11 @@ function closeViewer() {
 
 closeButton.addEventListener("click", closeViewer);
 
-
-/* Close when clicking the dark background */
-
 viewer.addEventListener("click", function (event) {
     if (event.target === viewer) {
         closeViewer();
     }
 });
-
-
-/* Close using Escape */
 
 document.addEventListener("keydown", function (event) {
     if (event.key === "Escape") {
@@ -429,11 +511,11 @@ document.addEventListener("keydown", function (event) {
 viewCodeButton.addEventListener("click", function () {
     codePanel.hidden = !codePanel.hidden;
 
-    if (codePanel.hidden) {
-        viewCodeButton.textContent = "View Code";
-    } else {
-        viewCodeButton.textContent = "Hide Code";
+    viewCodeButton.textContent = codePanel.hidden
+        ? "View Code"
+        : "Hide Code";
 
+    if (!codePanel.hidden) {
         codePanel.scrollIntoView({
             behavior: "smooth",
             block: "nearest"
@@ -442,7 +524,7 @@ viewCodeButton.addEventListener("click", function () {
 });
 
 
-/* Copy Python code */
+/* Copy code */
 
 copyButton.addEventListener("click", async function () {
     try {
@@ -455,11 +537,11 @@ copyButton.addEventListener("click", async function () {
         }, 1500);
 
     } catch (error) {
-        copyButton.textContent = "Select and Copy";
+        copyButton.textContent = "Copy unavailable - select code manually";
     }
 });
 
 
-/* Display cards when the page loads */
+/* Display all eight graphs */
 
 displayGraphs();
