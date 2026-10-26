@@ -1,47 +1,55 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ebola Data Analysis</title>
+    <title>Ebola Outbreak - Data Analysis</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
     <header class="page-header">
         <h1>Ebola Outbreak: Data Analysis</h1>
-        <p>Exploring the 2014 Ebola outbreak through data visualizations</p>
+        <p>
+            Exploring geographic distribution, monthly patterns and
+            country-level records of the 2014 Ebola outbreak.
+        </p>
     </header>
 
     <main>
         <section id="gallery" class="gallery"></section>
     </main>
 
-    <div id="viewer" class="viewer hidden">
+    <!-- Enlarged graph window -->
+    <div id="viewer" class="viewer" aria-hidden="true">
         <div class="viewer-content">
-            <button id="closeButton" class="close-button" aria-label="Close">
-                &times;
-            </button>
 
-            <h2 id="viewerTitle"></h2>
+            <button id="closeButton" class="close-button"
+                    aria-label="Close">&times;</button>
 
-            <img id="largeGraph" src="" alt="Enlarged graph">
+            <h2 id="viewerTitle" class="viewer-title"></h2>
 
-            <div id="viewerNotes" class="viewer-notes"></div>
-            <div id="viewerResearch" class="viewer-research"></div>
-
-            <div class="viewer-actions">
-                <button id="viewCodeButton" type="button">View Code</button>
+            <div id="viewerResearch" class="viewer-research">
+                <img id="largeGraph" src="" alt="Enlarged graph">
+                <div id="viewerNotes" class="research-notes"></div>
             </div>
 
-            <section id="codePanel" class="code-panel hidden">
-                <div class="code-heading">
+            <div class="viewer-actions">
+                <button id="viewCodeButton" class="action-button">
+                    View Code
+                </button>
+            </div>
+
+            <div id="codePanel" class="code-panel" hidden>
+                <div class="code-header">
                     <h3>Python Code</h3>
-                    <button id="copyButton" type="button">Copy Code</button>
+                    <button id="copyButton" class="action-button">
+                        Copy Code
+                    </button>
                 </div>
+
                 <pre><code id="pythonCode"></code></pre>
-            </section>
+            </div>
         </div>
     </div>
 
